@@ -62,7 +62,7 @@
 
         <!--mapper映射文件生成所在的目录 为每一个数据库的表生成对应的SqlMap文件 -->
         <!--<sqlMapGenerator targetPackage="mappers" targetProject=".\src\main\resources">-->
-        <sqlMapGenerator targetPackage="com.wangkaiyi.dao.mapper" targetProject="./src/main/java">
+        <sqlMapGenerator targetPackage="resources.mapper" targetProject="./src/main/">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
@@ -74,7 +74,7 @@
 
         <!-- targetPackage：mapper接口dao生成的位置 -->
         <!--<javaClientGenerator type="XMLMAPPER" targetPackage="com.mmall.dao" targetProject=".\src\main\java">-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="resources.mapper" targetProject="./src/main/">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.wangkaiyi.dao" targetProject="./src/main/java">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>

@@ -8,15 +8,45 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd
     http://www.springframework.org/schema/mvc
-    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
     <!-- 配置SpringMVC -->
     <!-- 1.开启SpringMVC注解模式 -->
     <!-- 简化配置：
         (1)自动注册DefaultAnootationHandlerMapping,AnotationMethodHandlerAdapter
         (2)提供一些列：数据绑定，数字和日期的format @NumberFormat, @DateTimeFormat, xml,json默认读写支持
     -->
-    <mvc:annotation-driven />
-
+    <!--使用自定义转换器-->
+    <mvc:annotation-driven conversion-service="MyConvert"/>
+    <!--定义转换器-->
+    <bean id="MyConvert" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.wangkaiyi.Utils.DateConvert"/>
+            </set>
+        </property>
+    </bean>
+<!--    配置全局异常处理-->
+    <bean class="com.wangkaiyi.exception.CustomerExceptionResolver"/>
+    <!--配置多媒体处理器-->
+<!--    注意：这里id必须填写：multipartResolver-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--最大文件上传大小-->
+        <property name="maxUploadSize" value="8388608"/>
+    </bean>
+    <mvc:interceptors>
+        <!--<mvc:interceptor>
+            &lt;!&ndash;/**拦截所有请求，包括二级以上目录&ndash;&gt;
+            <mvc:mapping path="/**"/>
+            <bean class="com.wangkaiyi.interceptor.Myinterceptor"/>
+        </mvc:interceptor>-->
+        <mvc:interceptor>
+            <!--/**拦截所有请求，包括二级以上目录-->
+            <mvc:mapping path="/**"/>
+            <!--配置不拦截目录-->
+            <mvc:exclude-mapping path="/user/**"/>
+            <bean class="com.wangkaiyi.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
     <!-- 2.静态资源默认servlet配置
         (1)加入对静态资源的处理：js,gif,png
         (2)允许使用"/"做整体映射
